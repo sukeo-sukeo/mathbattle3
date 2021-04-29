@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="./style.css">
+  <title>mathbattle3</title>
+</head>
+
+<body>
+
+  <div class="menu" id="menuBtnWrapper">
+    <button class="nes-btn" id="kunren">クンレン</button>
+    <button class="nes-btn" id="tuyosa">ツヨサ</button>
+  </div>
+
+  <div class="main" id="titleDisplay">
+    <h1>かけざんバトル</h1>
+    <button class="nes-btn" id="startBtn">ハジメル</button>
+  </div>
+
+  <div class="main" id="selectDisplay">
+    <h2>バトルする相手をえらんでね！</h2>
+    <div id="enemeyContainer">
+    </div>
+    <div id="infoContainer">
+      <!-- info -->
+    </div>
+    <div id="selectBtnWrapper">
+      <button class="nes-btn" id="backBtn">モドル</button>
+      <button class="nes-btn is-warning" id="practiceBtn">クンレンする！</button>
+    </div>
+  </div>
+
+  <div class="main" id="battleDisplay">
+    <button class="nes-btn is-success" id="givupBtn">アキラメル</button>
+    <div id="enemeyHpBar">
+      <progress class="nes-progress is-primary" value="" max=""></progress>
+    </div>
+    <div id="questionBox">
+      <span class="nes-balloon from-left">
+        <span id="question"></span>は？
+      </span>
+    </div>
+    <div id="enemey">
+
+    </div>
+    <div id="answerBox"> 
+      <input type="text" class="nes-input" id="answerField" maxlength="4" autocomplete="off">
+    </div>
+    <div id="playerHpBar">
+      <progress class="nes-progress is-success" value="" max=""></progress>
+    </div>
+    <!-- <button class="nes-btn" style="position: absolute;">もどる(dev)</button> -->
+  </div>
+
+  <!-- <div class="main" id="statusDisplay"></div> -->
+
+  <div class="main nes-container is-dark with-title" id="consoleDisplay">
+    <span class="title">こたえを入力してやっつけろ！</span>
+    <div class="console-inner">
+      <div id="numKeyWrapper">
+        <!-- jsで生成 -->
+      </div>
+      <div id="consoleBtnWrapper">
+        <button class="nes-btn is-error" id="attackBtn">こうげき</button>
+        <button class="nes-btn is-warning" id="deleteBtn">さくじょ</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="main" id="fadeLayer"></div>
+
+  <script src="./config.js"></script>
+  <script src="./functions.js"></script>
+  <script src="./main.js" type="module"></script>
+
+</body>
+
+</html>
