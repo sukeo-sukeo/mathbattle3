@@ -23,23 +23,23 @@ class Enemey {
     const num2 = rand(1, 9)
     const question = `${num1}×${num2}`;
     const answer = num1 * num2;
-    console.log(question);
-    console.log(answer);
+    // console.log(question);
+    // console.log(answer);
     return [question, answer];
   }
 
 
   doAttack(enemey, player) {
     player.hp -=  enemey.atk
-    console.log(`${enemey.name}の攻撃`);
-    console.log(`${player.name}は${enemey.atk}のダメージ！`);
-    console.log('enemeyHP', enemey.hp);
-    console.log('playerHP', player.hp);
+    // console.log(`${enemey.name}の攻撃`);
+    // console.log(`${player.name}は${enemey.atk}のダメージ！`);
+    // console.log('enemeyHP', enemey.hp);
+    // console.log('playerHP', player.hp);
     return [enemey, player]
   }
 
   createInfoBox(enemey) {
-    console.log(enemey);
+    // console.log(enemey);
     return `
     <div class="nes-container with-title is-centered"
       style="padding: 20px 0 0 0;width: 25%;"

@@ -4,10 +4,11 @@ class Battle {
   constructor(enemey, player) {
     this.enemey = enemey;
     this.player = player;
-    this.frameCount = 0;
     this.question;
     this.answer;
-    this.intervalID;
+
+    //クリックしなくても入力可能にする
+    this.focus = document.getElementById('answerField').focus()
 
     //敵キャラのhpをdom反映
     this.enemeyHPBar = document.getElementById("enemeyHpBar").children[0];
@@ -19,37 +20,41 @@ class Battle {
     this.playerHPBar.value = player.hp;
     this.playerHPBar.max = player.hp;
 
+    //activeTimeBarの反映
+    this.timeBar = document.getElementById('activeTimeBar').children[0]
+    this.timeBar.value = 0
+    this.timeBar.max = this.enemey.spd
   }
 
   start() {
     this._inputEvent();
     //レディーゴーの演出
-    this._mainLoop()
-  }
-
-  _mainLoop() {
-    //最初の問題
+    this._activeTime()
     this._createQuestion();
-    
-    //以下ループ(エネミースピード毎に問題提出)
-    const pushQuestion = () => {
-      this.frameCount++;
-      console.log('frame', this.frameCount);
-      console.log('intervalID', this.intervalID);
-      //エネミースピード毎に問題提出
-      if (this.frameCount % this.enemey.spd === 0) {
-        this._createQuestion();
-        this._attack(this.enemey)
-        if (this.player.hp <= 0) {
-          this._loose();
-          return;
-        }
-      }
-    };
-
-    this.intervalID = setInterval(pushQuestion, 1000);
-
   }
+  
+  _activeTime() {
+    const countUp = () => {
+      if (this.timeBar.value >= this.timeBar.max) {
+        this.timeBar.value = 0
+        this._sayQuestion()
+      }
+      this.timeBar.value += 1/100
+      setTimeout(() => countUp(), 10)
+    }
+    countUp()
+  }
+
+  _sayQuestion() {
+    this._createQuestion();
+    this._attack(this.enemey);
+    this.timeBar.value = 0;
+    if (this.player.hp <= 0) {
+      this._loose();
+      return;
+    }
+  }
+
 
   _createQuestion() {
     const container = document.getElementById("question");
@@ -59,10 +64,13 @@ class Battle {
 
   _inputEvent() {
     const input = document.getElementById('answerField')
-    window.addEventListener('keydown', e => {
+    
+    window.addEventListener('keyup', async (e) => {
       if (e.key === 'Enter') {
         if (input.value) {
-          this._checkAnswer(input.value)
+          //全角のときは半角に変換する処理
+          const answer = await zenkakuCheck(input.value)
+          this._checkAnswer(answer)
         }
         input.value = ''
       }
@@ -73,6 +81,8 @@ class Battle {
     if (Number(val) === Number(this.answer)) {
       console.log('あってます！');
       this._attack(this.player)
+      this.timeBar.value = 0;
+      this._createQuestion();
       if (this.enemey.hp <= 0) {
         this._win()
         return
@@ -80,14 +90,12 @@ class Battle {
     } else {
       console.log('ちがいます！');
       this._attack(this.enemey)
+      this.timeBar.value = 0;
       if (this.player.hp <= 0) {
         this._loose()
         return
       }
     }
-    this.frameCount = 0;
-    clearInterval(this.intervalID);
-    this._mainLoop()
   }
 
   _attack(done) {
@@ -106,7 +114,6 @@ class Battle {
   }
 
   _win() {
-    clearInterval(this.intervalID)
     sleep(1, () => {
       alert("勝利した！")
       console.log("★★★★★★★★");
@@ -117,7 +124,6 @@ class Battle {
   }
   
   _loose() {
-    clearInterval(this.intervalID);
     sleep(1, () => {
       alert("負けた...");
       setLocation(views.select)

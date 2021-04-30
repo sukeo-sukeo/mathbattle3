@@ -10,8 +10,8 @@ class Player {
   doAttack(enemey, player, val) {
     console.log(val);
     enemey.hp -= val
-    console.log(`${player.name}の攻撃`);
-    console.log(`${enemey.name}は${val}のダメージ！`);
+    // console.log(`${player.name}の攻撃`);
+    // console.log(`${enemey.name}は${val}のダメージ！`);
     return [enemey, player];
   }
 }

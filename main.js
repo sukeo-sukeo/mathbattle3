@@ -30,6 +30,12 @@ const main = () => {
 
 
 window.onload = () => {
+  window.addEventListener('keydown', e => {
+    console.log(e.isComposing);
+    if (e.isComposing) {
+      console.log('入力中');
+    }
+  })
   main();
   // blackoutoの時間
   const time = 500

@@ -38,3 +38,19 @@ const fade = (color) => {
   target.style.left = 0
 }
 
+const hankakuToZenkaku = (str) => {
+  return str.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function (s) {
+    return String.fromCharCode(s.charCodeAt(0) - 0xfee0);
+  });
+}
+
+const zenkakuCheck = (str) => {
+  if (str.match(/^[^\x01-\x7E\xA1-\xDF]+$/)) {
+    //全角文字
+    console.log("全角文字です");
+    return hankakuToZenkaku(str)
+  } else {
+    console.log('半角文字です');
+    return str
+  }
+}

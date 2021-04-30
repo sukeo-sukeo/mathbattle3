@@ -95,10 +95,21 @@ body {
 }
 #battleDisplay #enemeyHpBar {
   text-align: center;
+  height: 48px;
   opacity: .8;
 }
 #battleDisplay .nes-progress {
   width: 50%;
+}
+#battleDisplay #activeTimeBar {
+  text-align: center;
+}
+#activeTimeBar .nes-progress {
+  width: 44%;
+  height: 10px;
+  border-top: none;
+  padding: 0;
+  margin: 0;
 }
 #battleDisplay #questionBox {
   position: absolute;
@@ -117,7 +128,7 @@ body {
   letter-spacing: 10px;
 }
 #battleDisplay #enemey {
-  height: 200px;
+  height: 190px;
   text-align: center;
 }
 #enemey img {
