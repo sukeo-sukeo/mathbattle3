@@ -1,11 +1,14 @@
 'use strict'
 
+import Motion from './motion.js'
+
 class Battle {
   constructor(enemey, player) {
     this.enemey = enemey;
     this.player = player;
     this.question;
     this.answer;
+    this.questionBox = document.getElementById("question");
 
     //クリックしなくても入力可能にする
     this.focus = document.getElementById('answerField').focus()
@@ -29,7 +32,7 @@ class Battle {
   start() {
     this._inputEvent();
     //レディーゴーの演出
-    this._activeTime()
+    // this._activeTime()
     this._createQuestion();
   }
   
@@ -57,9 +60,8 @@ class Battle {
 
 
   _createQuestion() {
-    const container = document.getElementById("question");
     [this.question, this.answer] = this.enemey.thinkQuestion();
-    container.textContent = this.question;
+    this.questionBox.textContent = this.question;
   }
 
   _inputEvent() {
@@ -70,32 +72,34 @@ class Battle {
         if (input.value) {
           //全角のときは半角に変換する処理
           const answer = await zenkakuCheck(input.value)
-          this._checkAnswer(answer)
+          this._checkAnswer(answer, input)
         }
-        input.value = ''
       }
     })
   }
 
-  _checkAnswer(val) {
+  _checkAnswer(val, input) {
     if (Number(val) === Number(this.answer)) {
       console.log('あってます！');
       this._attack(this.player)
+      Motion.flyingNum("#answerField");
       this.timeBar.value = 0;
       this._createQuestion();
       if (this.enemey.hp <= 0) {
+        Motion.huttobi('img')
         this._win()
         return
       }
     } else {
-      console.log('ちがいます！');
       this._attack(this.enemey)
+      Motion.dropNum("#answerField");
       this.timeBar.value = 0;
       if (this.player.hp <= 0) {
         this._loose()
         return
       }
     }
+    setTimeout(() => (input.value = ""), 300);
   }
 
   _attack(done) {
@@ -104,16 +108,25 @@ class Battle {
     console.log(side);
     if (side === 'Enemey') {
       // 敵の攻撃
+      Motion.attack('img');
       [this.enemey, this.player] = this.enemey.doAttack(this.enemey, this.player);
       this.playerHPBar.value -= this.enemey.atk
+      if (this.player.hp >= 0) {
+        Motion.shake_b('body');
+      }
     } else {
       // プレイヤーの攻撃
+      Motion.damage('img');
       [this.enemey, this.player] = this.player.doAttack(this.enemey, this.player,  this.answer);
       this.enemeyHPBar.value -= this.answer
+      if (this.enemey.hp >= 0) {
+        Motion.shake_f("body");
+      }
     }
   }
 
   _win() {
+    this.questionBox.textContent = 'まいった〜'
     sleep(1, () => {
       alert("勝利した！")
       console.log("★★★★★★★★");
@@ -124,6 +137,7 @@ class Battle {
   }
   
   _loose() {
+    this.questionBox.textContent = 'いぇ〜い'
     sleep(1, () => {
       alert("負けた...");
       setLocation(views.select)
