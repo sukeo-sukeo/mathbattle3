@@ -32,7 +32,7 @@ class Battle {
   start() {
     this._inputEvent();
     //レディーゴーの演出
-    // this._activeTime()
+    this._activeTime()
     this._createQuestion();
   }
   
@@ -80,7 +80,7 @@ class Battle {
 
   _checkAnswer(val, input) {
     if (Number(val) === Number(this.answer)) {
-      console.log('あってます！');
+      //正解時の処理
       this._attack(this.player)
       Motion.flyingNum("#answerField");
       this.timeBar.value = 0;
@@ -91,6 +91,7 @@ class Battle {
         return
       }
     } else {
+      //不正解時の処理
       this._attack(this.enemey)
       Motion.dropNum("#answerField");
       this.timeBar.value = 0;
